@@ -2,7 +2,7 @@ const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 ctx.scale(2, 2);
 
-canvas.width = 1000;
+canvas.width = 500;
 canvas.height = 500;
 
 const centerX = innerWidth / 2;
@@ -24,6 +24,14 @@ let colors = {
 	blue: '#219ebc',
 	yellow: '#D0C832',
 };
+let grays = {
+	100: '#EEEEEE',
+	200: '#CCCCCC',
+	300: '#999999',
+	400: '#666666',
+	500: '#333333',
+	600: '#000000',
+};
 
 const getPageTopLeft = (el) => {
 	var rect = el.getBoundingClientRect();
@@ -34,12 +42,19 @@ const getPageTopLeft = (el) => {
 	};
 };
 
+function getDistance(xA, yA, xB, yB) {
+	var xDiff = xA - xB;
+	var yDiff = yA - yB;
+
+	return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+}
+
 class Rect {
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
 		this.width = 40;
-		this.height = 5;
+		this.height = 4;
 		this.rotation = 0;
 	}
 
@@ -48,7 +63,18 @@ class Rect {
 		ctx.translate(this.x, this.y);
 		ctx.rotate((this.rotation * Math.PI) / 180);
 		// ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
-		ctx.fillStyle = colors.white;
+		let dist = this.checkDist(mouse);
+		console.log(dist);
+		if (dist >= 300) {
+			ctx.fillStyle = grays[100];
+		} else if (dist >= 200) {
+			ctx.fillStyle = grays[200];
+		} else if (dist >= 100) {
+			ctx.fillStyle = grays[400];
+		} else {
+			ctx.fillStyle = grays[600];
+		}
+
 		ctx.beginPath();
 		ctx.rect(0 - this.width / 2, 0 - this.height / 2, this.width, this.height);
 		// ctx.rect(-this.width / 2, -this.height / 2, this.width, this.height)
@@ -78,6 +104,18 @@ class Rect {
 		);
 
 		return Math.atan2(mouse.y - object.y, mouse.x - object.x) * (180 / Math.PI);
+	}
+
+	checkDist(mouse) {
+		let distance = getPageTopLeft(canvas);
+		let object = {
+			x: distance.left + this.x,
+			y: distance.top + this.y,
+		};
+
+		let result = getDistance(mouse.x, mouse.y, object.x, object.y);
+
+		return result;
 	}
 }
 
@@ -131,7 +169,7 @@ for (let i = spacing; i < canvas.width; i += spacing) {
 
 function animate() {
 	requestAnimationFrame(animate);
-	ctx.fillStyle = colors.backgroundSecondary;
+	ctx.fillStyle = '#fff';
 	ctx.fillRect(0, 0, innerWidth, innerHeight);
 
 	// drawGrid();
