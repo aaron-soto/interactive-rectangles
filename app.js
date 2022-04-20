@@ -2,8 +2,10 @@ const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 ctx.scale(2, 2);
 
-canvas.width = 500;
-canvas.height = 500;
+canvas.width = window.innerWidth;
+// canvas.width = 500;
+canvas.height = window.innerHeight;
+// canvas.height = 500;
 
 const centerX = innerWidth / 2;
 const centerY = innerHeight / 2;
@@ -156,10 +158,8 @@ function drawGrid() {
 	ctx.restore();
 }
 
-let rect1 = new Rect(100, 100);
-let rects = [];
-
 let spacing = 50;
+let rects = [];
 
 for (let i = spacing; i < canvas.width; i += spacing) {
 	for (let j = spacing; j < canvas.height; j += spacing) {
