@@ -66,7 +66,6 @@ class Rect {
 		ctx.rotate((this.rotation * Math.PI) / 180);
 		// ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
 		let dist = this.checkDist(mouse);
-		console.log(dist);
 		if (dist >= 300) {
 			ctx.fillStyle = grays[100];
 		} else if (dist >= 200) {
@@ -100,10 +99,6 @@ class Rect {
 			x: distance.left + this.x,
 			y: distance.top + this.y,
 		};
-
-		console.log(
-			Math.atan2(mouse.y - object.y, mouse.x - object.x) * (180 / Math.PI)
-		);
 
 		return Math.atan2(mouse.y - object.y, mouse.x - object.x) * (180 / Math.PI);
 	}
@@ -178,9 +173,6 @@ function animate() {
 		rect.update(mouse);
 		rect.draw();
 	});
-
-	rect1.update(mouse);
-	rect1.draw();
 }
 
 addEventListener('mousemove', (event) => {
